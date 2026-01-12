@@ -1,0 +1,11 @@
+﻿<nav>
+    <ul>
+        <li><a asp-controller="User" asp-action="Index">Home</a></li>
+        <li><a asp-controller="User" asp-action="Profile">Profile</a></li>
+        <li><a asp-controller="User" asp-action="Settings">Settings</a></li>
+        <li><a href="@Url.Action("Logout", "User")">Logout</a></li>
+    </ul>
+</nav>
+
+<h1>Home Page</h1>
+<p>Welcome, @ViewBag.user_name!</p>

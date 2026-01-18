@@ -50,6 +50,10 @@ namespace Auth.Controllers
             var hasher = new PasswordHasher<Users>();
             user.password = hasher.HashPassword(user, user.password);
 
+            
+            user.RoleId = 2;
+
+
             _context.tbl_users.Add(user);
             _context.SaveChanges();
             return RedirectToAction("Login");
@@ -80,8 +84,11 @@ namespace Auth.Controllers
                 {
                     HttpContext.Session.SetString("user_id", row.id.ToString());
                     HttpContext.Session.SetString("user_name", row.name);
+                    HttpContext.Session.SetString("user_role", row.RoleId.ToString());
+
                     return RedirectToAction("Index");
                 }
+
             }
 
             //else part
@@ -95,6 +102,40 @@ namespace Auth.Controllers
             //HttpContext.Session.Clear();
             HttpContext.Session.Remove("user_id");
             return RedirectToAction("Login");
+        }
+
+
+
+
+        public IActionResult FacultyPanel()
+        {
+            var role = HttpContext.Session.GetString("user_role");
+
+            if (role != "1")
+            {
+                return RedirectToAction("AccessDenied");
+            }
+
+
+            return View();
+        }
+
+
+        public IActionResult StudentPanel()
+        {
+            var role = HttpContext.Session.GetString("user_role");
+
+            if (role != "2")
+            {
+                return RedirectToAction("AccessDenied");
+            }
+
+            return View();
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
     }
